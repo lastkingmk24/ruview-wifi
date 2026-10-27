@@ -33,7 +33,7 @@ The preview server also applies the same-origin backend proxy. For a static host
 
 ## Deployment
 
-The `Deploy observatory to GitHub Pages` workflow publishes the demo from the Arena session branch at **https://lastkingmk24.github.io/ruview-wifi/**. It runs typecheck/tests, builds with the repository base path, and deploys the static artifact. GitHub Pages is static hosting: the DEMO works there, but LIVE needs a separately hosted RuView backend and same-origin application proxy; Pages cannot proxy requests to a private Wi-Fi sensor or server.
+Set the repository's Pages source to **GitHub Actions** once in Settings → Pages. After that, every push to the Arena session branch triggers the `Deploy observatory to GitHub Pages` workflow, which publishes the demo at **https://lastkingmk24.github.io/ruview-wifi/**. It runs typecheck/tests, builds with the repository base path, and deploys the static artifact. GitHub Pages is static hosting: the DEMO works there, but LIVE needs a separately hosted RuView backend and same-origin application proxy; Pages cannot proxy requests to a private Wi-Fi sensor or server.
 
 ## What is implemented
 
