@@ -1,0 +1,17 @@
+{
+  "name": "ruview-observatory",
+  "version": "1.0.0",
+  "description": "RuView Observatory — tactical WiFi sensing situational-awareness dashboard (self-contained demo build for GitHub Pages)",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "clean": "node scripts/build.mjs --clean-only"
+  }
+}

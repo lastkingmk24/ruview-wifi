@@ -1,10 +1,18 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# RuView Observatory — GitHub Pages deployment
+#
+# Fixes over the original template workflow:
+#  1. Builds the static site (npm ci → test → build) and deploys ONLY the
+#     generated `dist/` directory — not the entire repository root.
+#  2. The `github-pages` environment has branch-protection rules that only
+#     allow deployments from `main`. This workflow therefore only triggers
+#     deploys from `main` (push or manual dispatch); session branches build
+#     and test locally/CI but cannot deploy until merged into `main`.
+name: Deploy RuView Observatory to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes targeting the default branch (main)
   push:
-    branches: ["main"]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,26 +26,44 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck and test
+        run: npm test
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          # Upload only the built site — never the repository root
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
