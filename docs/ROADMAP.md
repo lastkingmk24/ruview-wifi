@@ -11,6 +11,18 @@ This roadmap tracks turning the self-contained simulation demo into a fuller obs
 - [x] Zero-dependency build + local preview server
 - [x] GitHub Actions Pages deployment (build → test → deploy `dist/`)
 
+## v1.1 — Phase 1: device counting MVP (implemented, synthetic baseline validated)
+
+- [x] 802.11 management-frame parser (radiotap + IEs), pcap reader/writer/stream
+- [x] Salted-HMAC MAC anonymization (no raw MACs persisted)
+- [x] Randomization-aware probe clustering (features + SSID overlap + time window)
+- [x] Device counter: zone attribution, heuristic confidence, staleness/TTL, audit log
+- [x] Operator HTTP API (health / devices / stats / events)
+- [x] Deterministic mock adapter + ground-truth harness (markdown validation report)
+- [x] Live capture runner (tcpdump stream) + pcap replay
+- [x] 30 new tests (44 total), all green
+- [ ] Hardware validation (controlled room, known devices) — operator procedure in docs/PHASE1.md
+
 ## v1.1 — interface hardening
 
 - [ ] Alert acknowledgement + filtering by level/type

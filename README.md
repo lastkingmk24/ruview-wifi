@@ -22,12 +22,43 @@ The RuView Observatory is a static, zero-dependency web application that visuali
 Requires Node.js 20+ (no runtime dependencies).
 
 ```bash
-npm test          # run the simulation-engine test suite (node:test)
+npm test          # run the test suite (node:test) — 44 tests
 npm run build     # validate + copy the site to dist/
 npm run serve     # local preview at http://localhost:8080
+npm run ground-truth   # Phase 1 validation report (synthetic baseline)
 ```
 
 Then open `http://localhost:8080/`.
+
+## Phase 1 — WiFi device counting (metadata only)
+
+A lawful, privacy-by-design acquisition pipeline for counting live WiFi
+devices from probe-request/association **metadata only** — no payload, no
+content, no identification. Raw MACs are anonymized (salted HMAC) before any
+storage; zone attribution via SSID→zone map; append-only audit log.
+
+```
+acquisition/   frames.js · pcap.js · anonymize.js · clusterer.js ·
+               counter.js · pipeline.js · mock-adapter.js · evaluation.js · audit.js
+server/api.js   operator HTTP API (health / devices / stats / events)
+scripts/        ground-truth.mjs (validation harness) · capture.mjs (live capture)
+```
+
+### Live capture (Linux host + monitor-mode NIC)
+
+```bash
+sudo ip link set wlan0 down
+sudo iw dev wlan0 set type monitor
+sudo ip link set wlan0 up
+npm run capture -- --iface wlan0mon --port 8181 --zones acquisition/zones.example.json
+```
+
+Or replay a pcap file (no hardware): `npm run capture -- --file capture.pcap`
+
+### Compliance gate
+
+Read `docs/COMPLIANCE.md` before any live sensing — jurisdiction,
+authorization, IRB, allowed-metadata list, retention limits.
 
 ## Project layout
 
