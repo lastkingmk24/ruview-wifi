@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RuView Observatory — Tactical WiFi Sensing Dashboard</title>
+  <meta name="description" content="RuView Observatory — mission-control dashboard for WiFi CSI sensing: presence, motion, vitals and sensor-mesh telemetry. Self-contained simulation demo." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="15" class="logo-ring" />
+        <circle cx="20" cy="20" r="9" class="logo-ring" />
+        <path d="M20 6 L22 14 L20 20 L18 14 Z" class="logo-ring" />
+        <circle cx="20" cy="20" r="2.5" class="logo-core" />
+      </svg>
+      <div class="brand-text">
+        <h1>RUVVIEW OBSERVATORY</h1>
+        <p>Tactical WiFi sensing situational awareness</p>
+      </div>
+    </div>
+    <div class="topbar-mid">
+      <span class="badge badge-sim">SIMULATION · DEMO MODE</span>
+      <span class="clock" id="clock">--:--:-- UTC</span>
+      <span class="clock-local" id="clock-local">--:--:-- +05:30</span>
+    </div>
+    <div class="status-pills">
+      <span class="pill" id="pill-contacts">CONTACTS 0</span>
+      <span class="pill" id="pill-mesh">MESH 0/0</span>
+      <span class="pill" id="pill-spectrum">SPECTRUM OK</span>
+      <span class="pill pill-warn" id="pill-alerts">ALERTS 0</span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <button id="btn-pause" class="btn" type="button">PAUSE</button>
+      <label class="speed-label" for="sel-speed">SPEED</label>
+      <select id="sel-speed" class="select">
+        <option value="1">1×</option>
+        <option value="2">2×</option>
+        <option value="4">4×</option>
+        <option value="8">8×</option>
+      </select>
+      <button id="btn-reset" class="btn" type="button">RESET</button>
+    </div>
+    <div class="toolbar-group">
+      <span class="meta" id="meta-seed">SEED —</span>
+      <span class="meta" id="meta-tick">TICK 0</span>
+      <span class="meta" id="meta-uptime">UPTIME 00:00:00</span>
+    </div>
+  </div>
+
+  <main class="grid">
+    <section class="panel panel-map">
+      <div class="panel-head">
+        <h2>TACTICAL MAP</h2>
+        <span class="panel-sub">CSI sensor mesh · live tracking</span>
+      </div>
+      <canvas id="map-canvas" width="800" height="600" aria-label="Tactical sector map"></canvas>
+    </section>
+
+    <section class="panel panel-csi">
+      <div class="panel-head">
+        <h2>CSI SPECTRUM</h2>
+        <span class="panel-sub" id="csi-sub">56 subcarriers · 5.18–5.70 GHz</span>
+      </div>
+      <canvas id="csi-canvas" width="600" height="150" aria-label="CSI subcarrier spectrum"></canvas>
+    </section>
+
+    <section class="panel panel-vitals">
+      <div class="panel-head">
+        <h2>VITALS MONITOR</h2>
+        <span class="panel-sub" id="vitals-sub">contacts dwelling</span>
+      </div>
+      <canvas id="vitals-canvas" width="600" height="150" aria-label="Breathing and heart rate sparklines"></canvas>
+    </section>
+
+    <section class="panel panel-mesh">
+      <div class="panel-head">
+        <h2>SENSOR MESH</h2>
+        <span class="panel-sub">ESP32 CSI nodes</span>
+      </div>
+      <div class="mesh-table-wrap">
+        <table class="mesh-table">
+          <thead>
+            <tr><th>NODE</th><th>SECTOR</th><th>RSSI</th><th>BATT</th><th>PKT/S</th><th>UPTIME</th><th>STATUS</th></tr>
+          </thead>
+          <tbody id="mesh-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel panel-alerts">
+      <div class="panel-head">
+        <h2>ALERT FEED</h2>
+        <span class="panel-sub" id="alerts-sub">last 24</span>
+      </div>
+      <div class="alert-list" id="alert-list" role="log" aria-label="Alert feed"></div>
+    </section>
+
+    <section class="panel panel-console">
+      <div class="panel-head">
+        <h2>SENSOR CONSOLE</h2>
+        <span class="panel-sub">event log</span>
+      </div>
+      <div class="console" id="console" role="log" aria-label="Sensor event console"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>RuView Observatory · self-contained simulation · no live signals · for authorized demonstration environments only</span>
+    <span id="footer-build">build —</span>
+  </footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
